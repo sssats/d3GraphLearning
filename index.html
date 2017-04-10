@@ -1,34 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<title>There will be some graphs</title>
-		<link rel="stylesheet" href="reset.css">
-		<link rel="stylesheet" href="styles.css">
-	</head>
-	<body>
-		<header>
-			<form>
-				<label>
-					Enter match ID
-					<input type="text" name="matchId" id="matchId" value="3109947264">
-				</label>
-				<button type="button" id="findMatch">Find match</button>
-			</form>
-		</header>
-
-		<section>
-			<h3>Api response</h3>
-			<div id="resp"></div>
-		</section>
-
-		<section id="graph"></section>
-		<footer>
-			data taken from <a href="https://docs.opendota.com/">https://docs.opendota.com/</a>
-		</footer>
-		<script type="text/javascript" src="https://cdn.jsdelivr.net/lodash/4.17.4/lodash.min.js"></script>
-		<script src="https://d3js.org/d3.v4.min.js"></script>
-		<script type="text/javascript" src="script.js"></script>
-	</body>
+<head>
+    <meta charset="UTF-8">
+    <title>Graph Stats</title>
+    <link rel="stylesheet" href="assets/reset.css">
+    <link rel="stylesheet" href="assets/styles.css">
+    <link rel="icon" type="image/ico" href="assets/Favicon.ico">
+</head>
+<body>
+<header>
+    <form>
+        <label>
+            Enter match ID
+            <input type="text" name="matchId" id="matchId" value="3109947264">
+        </label>
+        <button type="button" id="findMatch">Find match</button>
+    </form>
+</header>
+<div id="resp"></div>
+<section id="graph"></section>
+<footer>
+    data taken from <a href="https://docs.opendota.com/">https://docs.opendota.com/</a>
+</footer>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/lodash/4.17.4/lodash.min.js"></script>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script type="text/javascript" src="assets/script.js"></script>
+</body>
 </html>
 
