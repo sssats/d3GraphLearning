@@ -1,0 +1,21 @@
+body {
+	width: 100%;
+	max-width: 1200px;
+	margin: 0 auto;
+}
+
+.heroList ul {
+	list-style: none;
+}
+
+.heroList ul li {
+	padding: 5px 0;
+}
+
+.heroList ul li img {
+	vertical-align: middle;
+}
+
+footer {
+	margin-top: 200px;
+}
