@@ -161,12 +161,12 @@ function drawBarChart(heroes) {
 			return hero.heroName;
 		})
 		.each(function(hero) {
-		/*	d3.select(self).selectAll('div').data(hero,function(d) {
-				console.log(d)
-				return d
-			}).append('div');
-			map.each(function() {
-			})*/
+			var self = this;
+			d3.map(hero).each(function(val, key) {
+				d3.select(self).filter(function() {
+					return dataConfig[key].drawInChart
+				}).append('div').text(dataConfig[key].displayName + '   ' + val);
+			});
 		});
 
 }
