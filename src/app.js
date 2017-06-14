@@ -1,24 +1,26 @@
 import _ from 'lodash';
 import * as d3 from "d3";
 import dataManager from './dataManager';
-import configManager from './configManager';
+import configurationController from './configurationController';
 
-var findMatchBtn = document.querySelector('#findMatch'),
-    allHeroes;
-
+var findMatchBtn = document.querySelector('#findMatch');
 
 findMatchBtn.addEventListener('click', function () {
     var matchId = document.querySelector('#matchId').value;
     dataManager.getMatchData(matchId).then(function (data) {
-        //printData(renderHeroList(data.heroData));
-        configManager.render(data.dataConfig, '#config');
+        if (!document.querySelector('#config ul.stats')) {
+            configurationController.renderStatOption(data.dataConfig, '#config');
+        }
+        if (!document.querySelector('#config ul.heroes')) {
+            configurationController.renderHeroList(data.heroData, '#config');
+        }
         drawGraph(data.heroData, data.dataConfig)
     });
 });
 
 document.addEventListener('toggleBarVisibility', (ev) => {
     let details = ev.detail,
-        bars = document.querySelectorAll('#graph .bar.' + details.type);
+        bars = document.querySelectorAll('.' + details.type);
 
     _.forEach(bars, function (bar) {
         if (details.visibility) {
@@ -27,33 +29,20 @@ document.addEventListener('toggleBarVisibility', (ev) => {
             bar.classList.add('hide');
         }
     });
-
 });
 
-function printData(data) {
-    document.querySelector('#resp').innerHTML = '';
-    document.querySelector('#resp').appendChild(data);
-}
+document.addEventListener('toggleHeroVisibility', (ev) => {
+    let details = ev.detail,
+        heroItem = document.querySelectorAll('#graph .heroItem.' + details.hero);
 
-
-function renderHeroList(heroes) {
-    var template = document.createElement('article'),
-        allHeroes = ``;
-    template.setAttribute('class', 'heroList');
-    _.forEach(heroes, function (hero) {
-        var icon = hero.heroIcon,
-            name = hero.heroName;
-
-        allHeroes += `<li>
-			<img src="${icon}" alt="${name}">
-			<span>${name}</span>
-		</li>`
+    _.forEach(heroItem, function (hero) {
+        if (details.visibility) {
+            hero.classList.remove('hide');
+        } else {
+            hero.classList.add('hide');
+        }
     });
-
-    template.innerHTML = `<ul>${allHeroes}</ul>`;
-
-    return template;
-}
+});
 
 
 function drawGraph(heroes, dataConfig, graphTypeId = 0) {
@@ -63,39 +52,53 @@ function drawGraph(heroes, dataConfig, graphTypeId = 0) {
 }
 
 function drawBarChart(heroes, dataConfig) {
-    var graph = d3.select('#graph')
-        .selectAll('div').data(heroes)
+    var graph,
+        graphItem,
+        title;
+
+    title = d3.select('#graph').append('div').classed('rowTitle', true);
+
+    d3.map(dataConfig).each(function (val, key) {
+        if (val.drawInChart) {
+            title.append('div').classed(key, true).text(function () {
+                return val.displayName;
+            });
+        }
+    });
+
+    graph = d3.select('#graph').append('div')
+        .selectAll('div:not(.rowTitle)').data(heroes)
         .enter()
         .append('div').attr('class', function (hero) {
-            return 'heroItem ' + hero.heroName.toLowerCase().replace(/\s/g, '');
+            return 'heroItem ' + hero.heroName.toLowerCase().replace(/[\s\W]/g, '');
         });
 
-    graph.append('div')
-        .classed('name', true)
-        .text(function (hero) {
-            return hero.heroName;
-        })
-        .append('img')
+    graph.append('div').append('img')
         .attr('src', function (hero) {
             return hero.heroIcon
+        })
+        .attr('title', function (hero) {
+            return hero.heroName;
         });
-
 
     graph.append('div')
         .classed('barWrapper', true)
         .each(function (hero) {
             var self = this;
             d3.map(hero).each(function (val, key) {
-                d3.select(self).filter(function () {
+                graphItem = d3.select(self).filter(function () {
                     return dataConfig[key].drawInChart
-                }).append('div')
-                    .attr('class', 'bar ' + key)
+                }).append('div').attr('class', 'bar ' + key);
+
+                graphItem.append('p')
+                    .classed('row', true)
                     .style('width', (val * 100) / dataConfig[key].max + '%')
-                    .append('p')
-                    .text(dataConfig[key].displayName + '   ' + val);
+
+                graphItem.append('p')
+                    .classed('title', true)
+                    .text(val);
+
             });
         });
-
-
 }
 

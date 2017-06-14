@@ -37,13 +37,13 @@ function dataManager() {
             values: []
         },
         gpm: {
-            displayName: 'Gold per minute',
+            displayName: 'Gold/minute',
             drawInChart: true,
             drawInConfig: true,
             values: []
         },
         xpm: {
-            displayName: 'Experience per minute',
+            displayName: 'Exp/minute',
             drawInChart: true,
             drawInConfig: true,
             values: []
@@ -67,7 +67,7 @@ function dataManager() {
             values: []
         },
         heal: {
-            displayName: 'Heal done',
+            displayName: 'Healing done',
             drawInChart: true,
             drawInConfig: true,
             values: []
@@ -79,7 +79,7 @@ function dataManager() {
             values: []
         },
         gold: {
-            displayName: 'Gold earned',
+            displayName: 'Total gold',
             drawInChart: true,
             drawInConfig: true,
             values: []
@@ -146,7 +146,7 @@ function dataManager() {
                 heroDamage: player['hero_damage'],
                 heal: player['hero_healing'],
                 towerDamage: player['tower_damage'],
-                gold: player['gold']
+                gold: player['total_gold']
             }
         });
 
