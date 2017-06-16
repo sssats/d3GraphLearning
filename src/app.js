@@ -1,10 +1,11 @@
 import _ from 'lodash';
-import * as d3 from "d3";
 import dataManager from './dataManager';
 import configurationController from './configurationController';
+import drawController from './drawController';
 import '../assets/style.scss';
 
-var findMatchBtn = document.querySelector('#findMatch');
+const findMatchBtn = document.querySelector('#findMatch');
+const pieHandlers = document.querySelector('#graph');
 
 findMatchBtn.addEventListener('click', function () {
     var matchId = document.querySelector('#matchId').value;
@@ -15,8 +16,17 @@ findMatchBtn.addEventListener('click', function () {
         if (!document.querySelector('#config ul.heroes')) {
             configurationController.renderHeroList(data.heroData, '#config');
         }
-        drawGraph(data.heroData, data.dataConfig)
+        drawGraph(data.heroData, data.dataConfig);
     });
+});
+
+pieHandlers.addEventListener('click', function (ev) {
+    const target = ev.target.classList.contains('bar') ? ev.target :
+        (ev.target.parentElement.classList.contains('bar') ? ev.target.parentElement :
+            (ev.target.parentElement.classList.contains('rowTitle') ? ev.target : false));
+    if (target) {
+        drawController.drawPieChart('#pie', target.getAttribute('class').replace(/(bar)[\s\W]/g, ''));
+    }
 });
 
 document.addEventListener('toggleBarVisibility', (ev) => {
@@ -48,59 +58,8 @@ document.addEventListener('toggleHeroVisibility', (ev) => {
 
 function drawGraph(heroes, dataConfig, graphTypeId = 0) {
     if (graphTypeId == 0) {
-        drawBarChart(heroes, dataConfig)
+        drawController.drawBarChart(heroes, dataConfig, '#graph')
     }
 }
 
-function drawBarChart(heroes, dataConfig) {
-    var graph,
-        graphItem,
-        title;
-
-    document.querySelector('#graph').innerHTML = '';
-
-    title = d3.select('#graph').append('div').classed('rowTitle', true);
-
-    d3.map(dataConfig).each(function (val, key) {
-        if (val.drawInChart) {
-            title.append('div').classed(key, true).text(function () {
-                return val.displayName;
-            });
-        }
-    });
-
-    graph = d3.select('#graph').append('div')
-        .selectAll('div:not(.rowTitle)').data(heroes)
-        .enter()
-        .append('div').attr('class', function (hero) {
-            return 'heroItem ' + hero.heroName.toLowerCase().replace(/[\s\W]/g, '');
-        });
-
-    graph.append('div').append('img')
-        .attr('src', function (hero) {
-            return hero.heroIcon
-        })
-        .attr('title', function (hero) {
-            return hero.heroName;
-        });
-
-    graph.append('div')
-        .classed('barWrapper', true)
-        .each(function (hero) {
-            var self = this;
-            d3.map(hero).each(function (val, key) {
-                graphItem = d3.select(self).filter(function () {
-                    return dataConfig[key].drawInChart
-                }).append('div').attr('class', 'bar ' + key);
-
-                graphItem.append('p')
-                    .classed('row', true)
-                    .style('width', (val * 100) / dataConfig[key].max + '%')
-
-                graphItem.append('p')
-                    .classed('title', true)
-                    .text(val);
-            });
-        });
-}
 

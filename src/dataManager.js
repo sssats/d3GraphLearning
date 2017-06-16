@@ -1,6 +1,7 @@
 import _ from 'lodash';
 
 function dataManager() {
+    let savedMatchId;
     let dataConfig = {
         heroIcon: {
             displayName: 'Icon',
@@ -111,6 +112,8 @@ function dataManager() {
     };
 
     function getMatchData(matchId) {
+        savedMatchId = matchId ? matchId : savedMatchId;
+        matchId = matchId ? matchId : savedMatchId;
         return new Promise((resolve, reject) => {
             let localMatch = (localStorage.getItem('match' + matchId));
             if (!_.isEmpty(localMatch)) {
