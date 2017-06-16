@@ -1,0 +1,96 @@
+body {
+  width: 90%;
+  margin: 0 auto;
+}
+
+h1 {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+footer {
+  margin-top: 200px;
+}
+
+main {
+  display: flex;
+  flex-direction: row;
+}
+
+#config ul {
+  margin: 50px 0;
+}
+
+#graph {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.rowTitle {
+  display: flex;
+  margin-left: 32px;
+
+  > div:not(.heroIcon) {
+    width: 100%;
+    margin: 0 5px;
+    overflow: hidden;
+  }
+
+  > div.hide {
+    width: 0;
+    transition: width 0.3s ease;
+  }
+
+  .heroIcon {
+    width: 32px;
+  }
+}
+
+.heroItem {
+  overflow: hidden;
+  display: flex;
+
+  height: 60px;
+  align-items: center;
+
+  transition: height 0.3s ease;
+  &.hide {
+    height: 0;
+  }
+}
+
+.barWrapper {
+  flex-grow: 1;
+  display: flex;
+}
+
+.bar {
+  position: relative;
+  margin: 0 5px;
+  height: 20px;
+  overflow: hidden;
+  width: 100%;
+  transition: width 0.3s ease;
+  background: rgba(0, 0, 0, 0.1);
+
+  &.hide {
+    width: 0;
+  }
+  .row {
+    bottom: 0;
+    height: 4px;
+    background: red;
+  }
+}
+
+.bar {
+  .title {
+    padding: 0 3px;
+  }
+  p {
+    position: absolute;
+  }
+}
+
+

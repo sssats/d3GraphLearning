@@ -2,6 +2,7 @@ import _ from 'lodash';
 import * as d3 from "d3";
 import dataManager from './dataManager';
 import configurationController from './configurationController';
+import '../assets/style.scss';
 
 var findMatchBtn = document.querySelector('#findMatch');
 
@@ -56,6 +57,8 @@ function drawBarChart(heroes, dataConfig) {
         graphItem,
         title;
 
+    document.querySelector('#graph').innerHTML = '';
+
     title = d3.select('#graph').append('div').classed('rowTitle', true);
 
     d3.map(dataConfig).each(function (val, key) {
@@ -97,7 +100,6 @@ function drawBarChart(heroes, dataConfig) {
                 graphItem.append('p')
                     .classed('title', true)
                     .text(val);
-
             });
         });
 }
