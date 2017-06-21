@@ -68,12 +68,33 @@ function drawController() {
 
     function drawPieChart(selector, statName) {
         dataManager.getMatchData().then(function (data) {
-            console.log(data);
             const pieData = mapDataForPie(data.dataConfig[statName].values, data.heroData)
             const svg = d3.select(selector).append('svg:svg')
                 .attr('width', '300px')
                 .attr('height', '300px');
-            const pie = d3.pie()(pieData.map(function(d) { return d.number; }));
+            const g = svg.append("g").attr("transform", "translate(150, 150)");
+            const color = d3.scaleOrdinal(["#F44336", "#795548", "#9C27B0", "#76FF03", "#3F51B5", "#2196F3", "#4CAF50", "#FF9800", "#607D8B", "#69F0AE"]);
+            const radius = 150;
+            const pie = d3.pie()(pieData.map(function (d) {
+                return d.number;
+            }));
+
+            var path = d3.arc()
+                .outerRadius(radius - 10)
+                .innerRadius(0);
+
+            var label = d3.arc()
+                .outerRadius(radius - 40)
+                .innerRadius(radius - 40);
+
+            var arc = g.selectAll('.arc').data(pie).enter().append("g")
+                .attr("class", "arc");
+
+            arc.append("path")
+                .attr("d", path)
+                .attr("fill", function (el, ind) {
+                    return color(ind);
+                });
         })
     }
 
