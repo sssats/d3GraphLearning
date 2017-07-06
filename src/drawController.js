@@ -31,7 +31,11 @@ function drawController() {
                 return 'heroItem ' + hero.heroName.toLowerCase().replace(/[\s\W]/g, '');
             });
 
-        graph.append('div').append('img')
+        graph.append('div')
+            .style('border-left', function (hero, index) {
+                return '5px solid' + colors[index];
+            })
+            .append('img')
             .attr('src', function (hero) {
                 return hero.heroIcon
             })
@@ -120,6 +124,9 @@ function drawController() {
                 .data(pie);
 
             text.enter()
+                .filter(function (d) {
+                    return d.data !== 0;
+                })
                 .append('text')
                 .attr('dy', '.35em')
                 .text(function (d) {
@@ -127,43 +134,10 @@ function drawController() {
                 })
                 .attr('transform', function (d) {
                     var pos = outerArc.centroid(d);
-                    pos[0] = 200 * (midAngle(d) < Math.PI ? 1 : -1);
+                    pos[0] *= 1.2;
+                    pos[1] *= 1.2;
                     return 'translate(' + pos + ')';
                 });
-
-            function midAngle(d) {
-                return d.startAngle + (d.endAngle - d.startAngle) / 2;
-            }
-
-            /*.attr('text-anchor', function (d) {
-             this._current = this._current || d;
-             var interpolate = d3.interpolate(this._current, d);
-             this._current = interpolate(0);
-             return function (t) {
-             var d2 = interpolate(t);
-             return midAngle(d2) < Math.PI ? 'start' : 'end';
-             };
-             });*/
-
-
-            /*           var polyline = lines.selectAll('polyline')
-             .data(pie(data), key);
-
-             polyline.enter()
-             .append('polyline');
-
-             polyline.transition().duration(1000)
-             .attrTween('points', function (d) {
-             this._current = this._current || d;
-             var interpolate = d3.interpolate(this._current, d);
-             this._current = interpolate(0);
-             return function (t) {
-             var d2 = interpolate(t);
-             var pos = outerArc.centroid(d2);
-             pos[0] = radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
-             return [arc.centroid(d2), outerArc.centroid(d2), pos];
-             };
-             });*/
         });
     }
 

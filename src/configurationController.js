@@ -83,7 +83,7 @@ function configurationController() {
     }
 
     function getColors() {
-        return ["#F44336", "#795548", "#9C27B0", "#76FF03", "#3F51B5", "#2196F3", "#4CAF50", "#FF9800", "#607D8B", "#69F0AE"]
+        return ["#2e6ae6", "#5de6ad", "#ad00ad", "#dcd90a", "#e66200", "#e67ab0", "#92a440", "#5cc5e0", "#00771f", "#956000"]
     }
 
     return {
